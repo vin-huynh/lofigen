@@ -52,13 +52,13 @@ class Player extends Component{
             if(note!=="") {
                 this.kick.triggerAttack(note);
             }
-        }, ["C4","","","", "","","","C4", "C4","","","", "","","",""],"8n").start(0);
+        }, ["C4","","","", "","","","C4", "C4","","","", "","","",""],"8n");
         this.snareLoop = new Tone.Sequence((time,note) => {
             if(note!=="") {
                 this.snare.triggerAttack(note);
             }
-        }, ["","C4"], "2n").start(0);
-        this.hatLoop = new Tone.Loop(()=>this.hat.triggerAttack("C4"),"4n").start(0);
+        }, ["","C4"], "2n");
+        this.hatLoop = new Tone.Loop(()=>this.hat.triggerAttack("C4"),"4n");
         
         this.kickLoop.humanize = true;
         this.snareLoop.humanize = true;
@@ -109,12 +109,14 @@ class Player extends Component{
     toggle = () => {
         this.setState({...this.state, progress: 0});
         if(Tone.Transport.state === "started") {
-            
             Tone.Transport.stop();
         }
         else {
             this.chords.start(0);
             this.melody.start(0);
+            this.kickLoop.start(0);
+            this.snareLoop.start(0);
+            this.hatLoop.start(0);
             Tone.Transport.start();
         }
     }
