@@ -23,25 +23,6 @@ const vol = new Tone.Volume(-6);
 Tone.Master.chain(dst, lpf, masterCompressor,vol);
 Tone.Transport.bpm.value = 156;
 Tone.Transport.swing = 1;
-const kick = new Kick().sampler;
-const snare = new Snare().sampler;
-const hat = new Hat().sampler;
-
-const kickLoop = new Tone.Sequence((time,note) => {
-    if(note!=="") {
-        kick.triggerAttack(note);
-    }
-}, ["C4","","","", "","","","C4", "C4","","","", "","","",""],"8n").start(0);
-const snareLoop = new Tone.Sequence((time,note) => {
-    if(note!=="") {
-        snare.triggerAttack(note);
-    }
-}, ["","C4"], "2n").start(0);
-const hatLoop = new Tone.Loop(()=>hat.triggerAttack("C4"),"4n").start(0);
-
-kickLoop.humanize = true;
-snareLoop.humanize = true;
-hatLoop.humanize = true;
 
 class Player extends Component{
 
@@ -52,13 +33,36 @@ class Player extends Component{
             key: "C",
             progression: [],
             progress: 0,
-            loaded: false
+            pianoLoaded: false,
+            kickLoaded: false,
+            snareLoaded: false,
+            hatLoaded: false
         }
 
-        this.pn = new Piano(() => this.setState({...this.state, loaded: true})).sampler;
+        this.pn = new Piano(() => this.setState({...this.state, pianoLoaded: true})).sampler;
+        this.kick = new Kick(() => this.setState({...this.state, kickLoaded: true})).sampler;
+        this.snare = new Snare(() => this.setState({...this.state, snareLoaded: true})).sampler;
+        this.hat = new Hat(() => this.setState({...this.state, hatLoaded: true})).sampler;
 
         this.chords = new Tone.Loop(this.playChord,"1n");
         this.melody = new Tone.Loop(this.playMelody,"8n");
+
+
+        this.kickLoop = new Tone.Sequence((time,note) => {
+            if(note!=="") {
+                this.kick.triggerAttack(note);
+            }
+        }, ["C4","","","", "","","","C4", "C4","","","", "","","",""],"8n").start(0);
+        this.snareLoop = new Tone.Sequence((time,note) => {
+            if(note!=="") {
+                this.snare.triggerAttack(note);
+            }
+        }, ["","C4"], "2n").start(0);
+        this.hatLoop = new Tone.Loop(()=>this.hat.triggerAttack("C4"),"4n").start(0);
+        
+        this.kickLoop.humanize = true;
+        this.snareLoop.humanize = true;
+        this.hatLoop.humanize = true;
 
         this.nextChord = this.nextChord.bind(this);
         this.playChord = this.playChord.bind(this);
@@ -123,10 +127,14 @@ class Player extends Component{
                 {idx===(this.state.progress+7)%8 ? "<" : ""}
             </li>
         )});
-        const loading = (<div>Loading samples..</div>);
         return (
             <div>
-                {this.state.loaded ? "" : loading}
+                <div>
+                    {this.state.pianoLoaded ? "" : "loading piano"}
+                    {this.state.kickLoaded ? "" : "loading kick"}
+                    {this.state.snareLoaded ? "" : "loading snare"}
+                    {this.state.hatLoaded ? "" : "loading hat"}
+                </div>
                 <button onClick={this.generateProgression}>Generate Chords</button>
                 <p>{this.state.key}</p>
                 <ol>{progressionList}</ol>
