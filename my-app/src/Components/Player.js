@@ -23,7 +23,6 @@ const vol = new Tone.Volume(-6);
 Tone.Master.chain(dst, lpf, masterCompressor,vol);
 Tone.Transport.bpm.value = 156;
 Tone.Transport.swing = 1;
-const pn = new Piano().sampler;
 const kick = new Kick().sampler;
 const snare = new Snare().sampler;
 const hat = new Hat().sampler;
@@ -52,8 +51,11 @@ class Player extends Component{
         this.state = {
             key: "C",
             progression: [],
-            progress: 0
+            progress: 0,
+            loaded: false
         }
+
+        this.pn = new Piano(() => this.setState({...this.state, loaded: true})).sampler;
 
         this.chords = new Tone.Loop(this.playChord,"1n");
         this.melody = new Tone.Loop(this.playMelody,"8n");
@@ -74,7 +76,7 @@ class Player extends Component{
         const root = Tone.Frequency(this.state.key+"3").transpose(chord.semitoneDist);
         const notes = Tone.Frequency(root).harmonize(chord.intervals).map(f => Tone.Frequency(f).toNote())
         .filter((c,i) => i<4);
-        pn.triggerAttackRelease(notes,"1n");
+        this.pn.triggerAttackRelease(notes,"1n");
         this.nextChord();
     }
 
@@ -90,7 +92,7 @@ class Player extends Component{
         const notes = Tone.Frequency(root).harmonize(scale).map(f => Tone.Frequency(f).toNote());
         let noteIdx = Math.floor(Math.random()*notes.length);
         if(Math.random()<0.33)
-            pn.triggerAttackRelease(notes[noteIdx]);
+            this.pn.triggerAttackRelease(notes[noteIdx]);
     }
 
     generateProgression = () => {
@@ -121,8 +123,10 @@ class Player extends Component{
                 {idx===(this.state.progress+7)%8 ? "<" : ""}
             </li>
         )});
+        const loading = (<div>Loading samples..</div>);
         return (
             <div>
+                {this.state.loaded ? "" : loading}
                 <button onClick={this.generateProgression}>Generate Chords</button>
                 <p>{this.state.key}</p>
                 <ol>{progressionList}</ol>
