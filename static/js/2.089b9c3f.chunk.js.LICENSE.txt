@@ -5,6 +5,13 @@ object-assign
 */
 
 /**
+ *  StartAudioContext.js
+ *  @author Yotam Mann
+ *  @license http://opensource.org/licenses/MIT MIT License
+ *  @copyright 2016 Yotam Mann
+ */
+
+/**
  * Tone.js
  * @author Yotam Mann
  * @license http://opensource.org/licenses/MIT MIT License
