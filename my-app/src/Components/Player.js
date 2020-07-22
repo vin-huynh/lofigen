@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as Tone from 'tone';
+import StartAudioContext from 'startaudiocontext';
 import ChordProgression from '../Chords/ChordProgression';
 import Piano from '../Piano/Piano';
 import Kick from '../Drums/Kick';
@@ -23,6 +24,7 @@ const vol = new Tone.Volume(-6);
 Tone.Master.chain(dst, lpf, masterCompressor,vol);
 Tone.Transport.bpm.value = 156;
 Tone.Transport.swing = 1;
+StartAudioContext(Tone.context);
 
 class Player extends Component{
 
@@ -137,6 +139,7 @@ class Player extends Component{
                     {this.state.snareLoaded ? "" : "loading snare"}
                     {this.state.hatLoaded ? "" : "loading hat"}
                 </div>
+                <div>now with audio context</div>
                 <button onClick={this.generateProgression}>Generate Chords</button>
                 <p>{this.state.key}</p>
                 <ol>{progressionList}</ol>
