@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import * as Tone from 'tone';
-import StartAudioContext from 'startaudiocontext';
 import ChordProgression from '../Chords/ChordProgression';
 import Piano from '../Piano/Piano';
 import Kick from '../Drums/Kick';
 import Snare from '../Drums/Snare';
 import Hat from '../Drums/Hat';
+import Noise from '../Drums/Noise';
 
 const keys = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
@@ -15,16 +15,11 @@ const masterCompressor = new Tone.Compressor({
 	"attack" : 0.5,
 	"release" : 0.1
 });
-const dst = new Tone.Distortion({
-    "distortion" : 0.1,
-    "wet" : 0.1
-});
 const lpf = new Tone.Filter(2000, "lowpass");
 const vol = new Tone.Volume(-6);
-Tone.Master.chain(dst, lpf, masterCompressor,vol);
+Tone.Master.chain(lpf, masterCompressor,vol);
 Tone.Transport.bpm.value = 156;
 Tone.Transport.swing = 1;
-StartAudioContext(Tone.context);
 
 class Player extends Component{
 
@@ -38,13 +33,16 @@ class Player extends Component{
             pianoLoaded: false,
             kickLoaded: false,
             snareLoaded: false,
-            hatLoaded: false
+            hatLoaded: false,
+            contextStarted: false,
+            genChordsOnce: false
         }
 
         this.pn = new Piano(() => this.setState({...this.state, pianoLoaded: true})).sampler;
         this.kick = new Kick(() => this.setState({...this.state, kickLoaded: true})).sampler;
         this.snare = new Snare(() => this.setState({...this.state, snareLoaded: true})).sampler;
         this.hat = new Hat(() => this.setState({...this.state, hatLoaded: true})).sampler;
+        this.noise = Noise;
 
         this.chords = new Tone.Loop(this.playChord,"1n");
         this.melody = new Tone.Loop(this.playMelody,"8n");
@@ -105,15 +103,18 @@ class Player extends Component{
         this.setState({
             key: keys[Math.floor(Math.random()*keys.length)], 
             progress: 0, 
-            progression: ChordProgression.generate(8)});
+            progression: ChordProgression.generate(8),
+            genChordsOnce: true});
     }
 
     toggle = () => {
         this.setState({...this.state, progress: 0});
         if(Tone.Transport.state === "started") {
             Tone.Transport.stop();
+            this.noise.stop();
         }
         else {
+            this.noise.start(0);
             this.chords.start(0);
             this.melody.start(0);
             this.kickLoop.start(0);
@@ -126,25 +127,81 @@ class Player extends Component{
     render() {
         const progressionList = this.state.progression.map((chord,idx) => {
             return (
-            <li key={idx}>
+            <li className={idx===(this.state.progress+7)%8 ? "live" : ""} key={idx}>
                 {chord.degree}
-                {idx===(this.state.progress+7)%8 ? "<" : ""}
+                
             </li>
         )});
+
+        const prep = (
+            <div className="prep">
+                <div className="sampleLoad">
+                    {!(this.state.pianoLoaded && this.state.kickLoaded && this.state.snareLoaded && this.state.hatLoaded) ?
+                        "loAding sAmples" :
+                        this.state.contextStarted ? "" : 
+                            <button
+                                className="contextBtn"
+                                onClick={() => {
+                                    Tone.start();
+                                    this.setState({...this.state, contextStarted: true});
+                                }}
+                            >
+                                stArt Audio context
+                            </button>}
+                </div>
+            </div>
+        );
+
+        const playable = (
+            <div className="playable">
+                <button 
+                    className="generateBtn"
+                    onClick={this.generateProgression}>
+                        generAte cHords
+                </button>
+                {!(this.state.genChordsOnce) ? "" : 
+                    <div>
+                        <div className="info">
+                            <h3 className="key">{this.state.key.toLowerCase()}</h3>
+                            <ol className="progressionList">{progressionList}</ol>
+                        </div>
+                        
+                        <button 
+                            className="playBtn"
+                            onClick={this.toggle}>
+                                {Tone.Transport.state==="started" ? "stop" : "plAy"}
+                        </button>
+                    </div>
+                }
+            </div>
+        );
+
         return (
             <div>
-                <div>
-                    {this.state.pianoLoaded ? "" : "loading piano"}
-                    {this.state.kickLoaded ? "" : "loading kick"}
-                    {this.state.snareLoaded ? "" : "loading snare"}
-                    {this.state.hatLoaded ? "" : "loading hat"}
+                <div className="content">
+                    <div className="title">
+                        <h1>lofi generAtor</h1>
+                        <h5>by Vin-HuynH</h5>
+                    </div>
+                    <div className="instructions">
+                        <h3>How to use lofigen</h3>
+                        <ol>
+                            {!(this.state.pianoLoaded && this.state.kickLoaded && this.state.snareLoaded && this.state.hatLoaded) ?
+                                <li>WAit for sAmples to loAd</li> : ""}
+                            {!(this.state.contextStarted) ? 
+                                <li>stArt Audio context</li> : ""}
+                            <li>generAte cHords</li>
+                            <li>press plAy And enjoy</li>
+                        </ol>
+                    </div>
+
+                    {this.state.pianoLoaded && this.state.kickLoaded && this.state.snareLoaded && this.state.hatLoaded &&
+                        this.state.contextStarted ? playable : prep}
                 </div>
-                <div>now with audio context</div>
-                <button onClick={this.generateProgression}>Generate Chords</button>
-                <p>{this.state.key}</p>
-                <ol>{progressionList}</ol>
-                <button onClick={this.toggle}>Play</button>
+                <section className={"gradient " + this.state.key.replace("#","s")}></section>
+                <section className="backdrop"></section>
             </div>
+            
         );
     }
 }

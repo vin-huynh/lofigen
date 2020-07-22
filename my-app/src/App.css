@@ -1,38 +1,180 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  color: #fff;
+}
+
+.content {
+  width: 75vw;
+  height: 100vh;
+  position: absolute;
+  top:0;
+  left: 12.5vw;
+  backdrop-filter: blur(4px) drop-shadow(0px 0px 16px #212121);
+}
+
+.title {
+  text-align: center;
+  border: 1px solid #fff;
+  border-radius: 16px;
+  width: 66vw; 
+  margin: 5vh auto;
+}
+
+.instructions {
+  margin: 5vh 0;
+}
+
+.instructions > ol {
+  list-style-type: none;
+  padding: 0;
+}
+
+.instructions li {
+  margin: 2vh 0; 
+}
+
+.prep {
+  width: 66vw;
+  margin: 5vh auto;
+}
+
+.sampleLoad {
+  font-size: 1.5rem;
+}
+
+button {
+  font-family: inherit;
+  font-size: 1.5rem;
+  border: 1px solid #fff;
+  border-radius: 16px;
+  padding: 2vw;
+  background: none;
+  width: 33vw;
+  color: #fff;
+}
+
+button:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:active {
+  outline: none;
+  font-weight: bold;
+}
+
+button:focus {
+  outline: none;
+}
+
+.progressionList {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  padding: 0;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.progressionList > li {
+  padding: 1.5vw;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.live {
+  font-weight: bold;
+}
+
+.info {
+  margin: 5vh auto;
+}
+
+.gradient {
+  width: 75%;
+  height: 100vh;
+  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+  background-size: 400% 400%;
+  position: fixed;
+  transition: background-position 2s ease;
+  top: 0;
+  left: 12.5%;
+  z-index: -1;
+}
+
+.backdrop {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: -10;
+  top:0;
+  left: 0;
+  background-color: #121212;
+}
+
+.C {
+  background-position: 0 50%;
+}
+
+.Cs {
+  background-position: 9% 50%;
+}
+
+.D {
+  background-position: 18% 50%;
+}
+
+.Ds {
+  background-position: 27% 50%;
+}
+
+.E {
+  background-position: 36% 50%;
+}
+
+.F {
+  background-position: 45% 50%;
+}
+
+.Fs {
+  background-position: 54% 50%;
+}
+
+.G {
+  background-position: 63% 50%;
+}
+
+.Gs {
+  background-position: 72% 50%;
+}
+
+.A {
+  background-position: 81% 50%;
+}
+
+.As {
+  background-position: 90% 50%;
+}
+
+.B {
+  background-position: 100% 50%;
+}
+
+@media(max-width:600px) {
+  .gradient {
+    width: 90%;
+    left: 5%;
   }
-  to {
-    transform: rotate(360deg);
+  h1{
+    font-size: 1.5rem;
+  }
+  button {
+    width: 80%;
+    font-size: 1rem;
+  }
+
+  .content{
+    width: 90%;
+    left: 5%;
   }
 }
