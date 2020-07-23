@@ -35,7 +35,11 @@ class Player extends Component{
             snareLoaded: false,
             hatLoaded: false,
             contextStarted: false,
-            genChordsOnce: false
+            genChordsOnce: false,
+            kickOff: false,
+            snareOff: false,
+            hatOff: false,
+            melodyDensity: 0.33,
         }
 
         this.pn = new Piano(() => this.setState({...this.state, pianoLoaded: true})).sampler;
@@ -49,16 +53,31 @@ class Player extends Component{
 
 
         this.kickLoop = new Tone.Sequence((time,note) => {
-            if(note!=="") {
-                this.kick.triggerAttack(note);
+            if(!this.state.kickOff) {
+                if(note==="C4" && Math.random()<0.9) {
+                    this.kick.triggerAttack(note);
+                } else if(note==="." && Math.random()<0.1) {
+                    this.kick.triggerAttack("C4");
+                }
             }
-        }, ["C4","","","", "","","","C4", "C4","","","", "","","",""],"8n");
+            
+        }, ["C4","","","", "","","","C4", "C4","",".","", "","","",""],"8n");
+
         this.snareLoop = new Tone.Sequence((time,note) => {
-            if(note!=="") {
-                this.snare.triggerAttack(note);
+            if(!this.state.snareOff) {
+                if(note!=="" && Math.random()<0.80) {
+                    this.snare.triggerAttack(note);
+                }
             }
         }, ["","C4"], "2n");
-        this.hatLoop = new Tone.Loop(()=>this.hat.triggerAttack("C4"),"4n");
+
+        this.hatLoop = new Tone.Sequence((time,note) => {
+            if(!this.state.hatOff) {
+                if(note!=="" && Math.random()<0.80) {
+                    this.hat.triggerAttack(note);
+                }
+            }
+        }, ["C4","C4","C4","C4","C4","C4","C4","C4"], "4n");
         
         this.kickLoop.humanize = true;
         this.snareLoop.humanize = true;
@@ -72,7 +91,38 @@ class Player extends Component{
 
     nextChord = () => {
         const nextProgress = this.state.progress === this.state.progression.length-1 ? 0 : this.state.progress+1;
-        this.setState({...this.state, progress: nextProgress});
+        if(this.state.progress===4) {
+            let nextKickOff = Math.random()<0.15;
+            let nextSnareOff = Math.random()<0.20;
+            let nextHatOff = Math.random()<0.25;
+
+            this.setState({...this.state,
+                progress: nextProgress,
+                kickOff: nextKickOff,
+                snareOff: nextSnareOff,
+                hatOff: nextHatOff
+            });
+        } else if (this.state.progress===0) {
+            let nextKickOff = Math.random()<0.15;
+            let nextSnareOff = Math.random()<0.20;
+            let nextHatOff = Math.random()<0.25;
+
+            let nextMelodyDensity = Math.random()*0.66;
+
+            this.setState({...this.state,
+                progress: nextProgress,
+                kickOff: nextKickOff,
+                snareOff: nextSnareOff,
+                hatOff: nextHatOff,
+                melodyDensity: nextMelodyDensity
+            });
+            
+        } else {
+            this.setState({...this.state,
+                progress: nextProgress,
+            });
+        }
+        
     }
 
     playChord = () => {
@@ -80,8 +130,8 @@ class Player extends Component{
         const root = Tone.Frequency(this.state.key+"3").transpose(chord.semitoneDist);
         const notes = Tone.Frequency(root).harmonize(chord.intervals).map(f => Tone.Frequency(f).toNote())
         .filter((c,i) => i<4);
-        this.pn.triggerAttackRelease(notes,"1n");
         this.nextChord();
+        this.pn.triggerAttackRelease(notes,"1n");
     }
 
     playMelody = () => {
@@ -95,7 +145,7 @@ class Player extends Component{
         });
         const notes = Tone.Frequency(root).harmonize(scale).map(f => Tone.Frequency(f).toNote());
         let noteIdx = Math.floor(Math.random()*notes.length);
-        if(Math.random()<0.33)
+        if(Math.random()<this.state.melodyDensity)
             this.pn.triggerAttackRelease(notes[noteIdx]);
     }
 
