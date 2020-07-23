@@ -128,10 +128,9 @@ class Player extends Component{
     playChord = () => {
         const chord = this.state.progression[this.state.progress];
         const root = Tone.Frequency(this.state.key+"3").transpose(chord.semitoneDist);
-        const size = Math.floor(Math.random()*2)+4;
+        const size = 4;
         const voicing = chord.generateVoicing(size);
         const notes = Tone.Frequency(root).harmonize(voicing).map(f => Tone.Frequency(f).toNote());
-        console.log(voicing);
         this.nextChord();
         this.pn.triggerAttackRelease(notes,"1n");
     }
