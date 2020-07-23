@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2e7e026aa7b09e3c7081927f643721d0",
+    "revision": "0079662c439fc99e7497eb1da60f07cf",
     "url": "/lofigen/index.html"
   },
   {
-    "revision": "22dfe160510522f302aa",
+    "revision": "e6d34bd024cbddf14b19",
     "url": "/lofigen/static/css/main.2d332b9f.chunk.css"
   },
   {
-    "revision": "17af6ff8cad05e565dce",
-    "url": "/lofigen/static/js/2.3d036c13.chunk.js"
+    "revision": "15c4fd6634609e17e1dc",
+    "url": "/lofigen/static/js/2.d3f0fba9.chunk.js"
   },
   {
     "revision": "e58b2fed1a83725c5b0108382043ede5",
-    "url": "/lofigen/static/js/2.3d036c13.chunk.js.LICENSE.txt"
+    "url": "/lofigen/static/js/2.d3f0fba9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "22dfe160510522f302aa",
-    "url": "/lofigen/static/js/main.e07447ad.chunk.js"
+    "revision": "e6d34bd024cbddf14b19",
+    "url": "/lofigen/static/js/main.afcf790b.chunk.js"
   },
   {
     "revision": "7c9d01d445a19f18936b",
