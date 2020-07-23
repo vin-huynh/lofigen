@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/lofigen/precache-manifest.f32e5558f6ac1df7762bb7d4dbf75c5a.js"
+  "/lofigen/precache-manifest.5c7ce1a0bc59f7fef79511f9eee22975.js"
 );
 
 self.addEventListener('message', (event) => {
