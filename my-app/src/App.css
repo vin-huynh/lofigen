@@ -169,7 +169,8 @@ button:focus {
   justify-content: space-evenly;
   align-items: flex-end;
   overflow: hidden;
-  height: 20%;
+  height: 100vh;
+  box-sizing: border-box;
   padding: 5%;
 }
 
@@ -204,6 +205,12 @@ button:focus {
   .content{
     width: 90%;
     left: 5%;
+  }
+}
+
+@media(min-width:1200px) {
+  .freqList {
+    padding: 2% 5%;
   }
 }
 
