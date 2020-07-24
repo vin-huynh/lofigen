@@ -15,6 +15,9 @@
   backdrop-filter: blur(4px) drop-shadow(0px 0px 16px #212121);
 }
 
+.visualizer {
+}
+
 .title {
   text-align: center;
   border: 1px solid #fff;
@@ -99,7 +102,7 @@ button:focus {
   transition: background-position 2s ease;
   top: 0;
   left: 12.5%;
-  z-index: -1;
+  z-index: -5;
 }
 
 .backdrop {
@@ -160,6 +163,31 @@ button:focus {
   background-position: 100% 50%;
 }
 
+.freqList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  overflow: hidden;
+  height: 20%;
+  padding: 5%;
+}
+
+.freqBar {
+  width: 5%;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.visualizer {
+  width: 75%;
+  height: fit-content;
+  position: fixed;
+  bottom: 0;
+  left: 12.5%;
+  z-index: -2;
+}
+
 @media(max-width:600px) {
   .gradient {
     width: 90%;
@@ -178,3 +206,4 @@ button:focus {
     left: 5%;
   }
 }
+

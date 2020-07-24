@@ -6,6 +6,7 @@ import Kick from '../Drums/Kick';
 import Snare from '../Drums/Snare';
 import Hat from '../Drums/Hat';
 import Noise from '../Drums/Noise';
+import Visualizer from './Visualizer';
 
 const keys = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
@@ -227,6 +228,12 @@ class Player extends Component{
             </div>
         );
 
+        const visual = (
+            <section className="visualizer">
+                <Visualizer audio={Tone.Master}/>
+            </section>
+        );
+
         return (
             <div>
                 <div className="content">
@@ -245,11 +252,11 @@ class Player extends Component{
                             <li>press plAy And enjoy</li>
                         </ol>
                     </div>
-
                     {this.state.pianoLoaded && this.state.kickLoaded && this.state.snareLoaded && this.state.hatLoaded &&
                         this.state.contextStarted ? playable : prep}
                 </div>
                 <section className={"gradient " + this.state.key.replace("#","s")}></section>
+                {Tone.Transport.state === "started" ? visual : ""}
                 <section className="backdrop"></section>
             </div>
             
