@@ -52,7 +52,6 @@ class Player extends Component{
         this.chords = new Tone.Loop(this.playChord,"1n");
         this.melody = new Tone.Loop(this.playMelody,"8n");
 
-
         this.kickLoop = new Tone.Sequence((time,note) => {
             if(!this.state.kickOff) {
                 if(note==="C4" && Math.random()<0.9) {
@@ -61,7 +60,6 @@ class Player extends Component{
                     this.kick.triggerAttack("C4");
                 }
             }
-            
         }, ["C4","","","", "","","","C4", "C4","",".","", "","","",""],"8n");
 
         this.snareLoop = new Tone.Sequence((time,note) => {
@@ -87,16 +85,18 @@ class Player extends Component{
         this.nextChord = this.nextChord.bind(this);
         this.playChord = this.playChord.bind(this);
         this.playMelody = this.playMelody.bind(this);
+        this.generateProgression = this.generateProgression.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
-
 
     nextChord = () => {
         const nextProgress = this.state.progress === this.state.progression.length-1 ? 0 : this.state.progress+1;
-        if(this.state.progress===4) {
-            let nextKickOff = Math.random()<0.15;
-            let nextSnareOff = Math.random()<0.20;
-            let nextHatOff = Math.random()<0.25;
+        const nextKickOff = Math.random()<0.15;
+        const nextSnareOff = Math.random()<0.20;
+        const nextHatOff = Math.random()<0.25;
+        const nextMelodyDensity = Math.random()*0.66;
 
+        if(this.state.progress===4) {
             this.setState({...this.state,
                 progress: nextProgress,
                 kickOff: nextKickOff,
@@ -104,20 +104,13 @@ class Player extends Component{
                 hatOff: nextHatOff
             });
         } else if (this.state.progress===0) {
-            let nextKickOff = Math.random()<0.15;
-            let nextSnareOff = Math.random()<0.20;
-            let nextHatOff = Math.random()<0.25;
-
-            let nextMelodyDensity = Math.random()*0.66;
-
             this.setState({...this.state,
                 progress: nextProgress,
                 kickOff: nextKickOff,
                 snareOff: nextSnareOff,
                 hatOff: nextHatOff,
                 melodyDensity: nextMelodyDensity
-            });
-            
+            });  
         } else {
             this.setState({...this.state,
                 progress: nextProgress,
@@ -132,6 +125,7 @@ class Player extends Component{
         const size = 4;
         const voicing = chord.generateVoicing(size);
         const notes = Tone.Frequency(root).harmonize(voicing).map(f => Tone.Frequency(f).toNote());
+
         this.nextChord();
         this.pn.triggerAttackRelease(notes,"1n");
     }
@@ -146,17 +140,20 @@ class Player extends Component{
                 return n;
         });
         const notes = Tone.Frequency(root).harmonize(scale).map(f => Tone.Frequency(f).toNote());
-        let noteIdx = Math.floor(Math.random()*notes.length);
+        const noteIdx = Math.floor(Math.random()*notes.length);
+
         if(Math.random()<this.state.melodyDensity)
-            this.pn.triggerAttackRelease(notes[noteIdx]);
+            this.pn.triggerAttack(notes[noteIdx]);
     }
 
     generateProgression = () => {
         this.setState({
+            ...this.state,
             key: keys[Math.floor(Math.random()*keys.length)], 
             progress: 0, 
             progression: ChordProgression.generate(8),
-            genChordsOnce: true});
+            genChordsOnce: true
+        });
     }
 
     toggle = () => {
@@ -259,7 +256,6 @@ class Player extends Component{
                 {Tone.Transport.state === "started" ? visual : ""}
                 <section className="backdrop"></section>
             </div>
-            
         );
     }
 }
