@@ -10,7 +10,7 @@ import Visualizer from './Visualizer';
 
 const keys = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
-const masterCompressor = new Tone.Compressor({
+const cmp = new Tone.Compressor({
 	"threshold" : -6,
 	"ratio" : 3,
 	"attack" : 0.5,
@@ -18,7 +18,7 @@ const masterCompressor = new Tone.Compressor({
 });
 const lpf = new Tone.Filter(2000, "lowpass");
 const vol = new Tone.Volume(-6);
-Tone.Master.chain(lpf, masterCompressor,vol);
+Tone.Master.chain(cmp,lpf,vol);
 Tone.Transport.bpm.value = 156;
 Tone.Transport.swing = 1;
 

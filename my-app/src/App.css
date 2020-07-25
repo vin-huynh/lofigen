@@ -12,11 +12,9 @@
   position: absolute;
   top:0;
   left: 12.5vw;
-  backdrop-filter: blur(4px) drop-shadow(0px 0px 16px #212121);
+  backdrop-filter: drop-shadow(0px 0px 16px #212121);
 }
 
-.visualizer {
-}
 
 .title {
   text-align: center;
@@ -175,9 +173,9 @@ button:focus {
 }
 
 .freqBar {
-  width: 5%;
+  width: 10px;
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .visualizer {

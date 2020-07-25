@@ -22,15 +22,18 @@ const Visualizer = (props) => {
 
     return (
         <div className="freqList">
-            {freqs.map((f,i) => 
-                <div key={i}
-                     className="freqBar"
-                     style={{
-                         height: `${150+f}px`,
-                     }}>
-                    
-                </div>)
-            }
+            {freqs.map((v,i) => {
+
+                const height = Math.max(3*(69+0.5*v),10); 
+                return(
+                    <div key={i}
+                        className="freqBar"
+                        style={{
+                            height: `${height}px`,
+                        }}>
+                        
+                    </div>);
+            })}
         </div>
     );
 };
