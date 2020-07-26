@@ -1,10 +1,9 @@
-import MajorScale from './MajorScale';
-import majorScale from './MajorScale';
+import { singleOct } from './MajorScale';
 
 class Chord {
     constructor(degree,intervals,nextChordIdxs) {
         this.degree = degree;
-        this.semitoneDist = majorScale[degree-1];
+        this.semitoneDist = singleOct[degree-1];
         this.intervals = intervals;
         this.nextChordIdxs = nextChordIdxs;
     }
@@ -41,6 +40,15 @@ class Chord {
         }
         voicing.unshift(0);
         return voicing;
+    }
+
+    generateMode() {
+        return this.intervals.map(n => {
+            if(n>=12)
+                return n-12;
+            else
+                return n;
+        });
     }
 }
 

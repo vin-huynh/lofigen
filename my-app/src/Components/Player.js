@@ -7,8 +7,9 @@ import Snare from '../Drums/Snare';
 import Hat from '../Drums/Hat';
 import Noise from '../Drums/Noise';
 import Visualizer from './Visualizer';
-
-const keys = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+import Keys from '../Chords/Keys';
+import {fiveToFive} from '../Chords/MajorScale';
+import intervalWeights from '../Chords/IntervalWeights';
 
 const cmp = new Tone.Compressor({
 	"threshold" : -6,
@@ -30,17 +31,24 @@ class Player extends Component{
         this.state = {
             key: "C",
             progression: [],
+            scale: [],
             progress: 0,
+
             pianoLoaded: false,
             kickLoaded: false,
             snareLoaded: false,
             hatLoaded: false,
+
             contextStarted: false,
             genChordsOnce: false,
+
             kickOff: false,
             snareOff: false,
             hatOff: false,
             melodyDensity: 0.33,
+            melodyOff: false,
+
+            scalePos: 0,
         }
 
         this.pn = new Piano(() => this.setState({...this.state, pianoLoaded: true})).sampler;
@@ -94,7 +102,8 @@ class Player extends Component{
         const nextKickOff = Math.random()<0.15;
         const nextSnareOff = Math.random()<0.20;
         const nextHatOff = Math.random()<0.25;
-        const nextMelodyDensity = Math.random()*0.66;
+        const nextMelodyDensity = Math.random()*0.3+0.2;
+        const nextMelodyOff = Math.random()<0.25;
 
         if(this.state.progress===4) {
             this.setState({...this.state,
@@ -109,7 +118,8 @@ class Player extends Component{
                 kickOff: nextKickOff,
                 snareOff: nextSnareOff,
                 hatOff: nextHatOff,
-                melodyDensity: nextMelodyDensity
+                melodyDensity: nextMelodyDensity,
+                melodyOff: nextMelodyOff
             });  
         } else {
             this.setState({...this.state,
@@ -131,28 +141,78 @@ class Player extends Component{
     }
 
     playMelody = () => {
-        const chord = this.state.progression[this.state.progress];
-        const root = Tone.Frequency(this.state.key+"5").transpose(chord.semitoneDist);
-        const scale = chord.intervals.map(n => {
-            if(n>=12)
-                return n-12;
-            else
-                return n;
-        });
-        const notes = Tone.Frequency(root).harmonize(scale).map(f => Tone.Frequency(f).toNote());
-        const noteIdx = Math.floor(Math.random()*notes.length);
+        // const chord = this.state.progression[this.state.progress];
+        // const root = Tone.Frequency(this.state.key+"5").transpose(chord.semitoneDist);
+        // const scale = chord.generateMode();
+        // const notes = Tone.Frequency(root).harmonize(scale).map(f => Tone.Frequency(f).toNote());
+        // const noteIdx = Math.floor(Math.random()*notes.length);
+        // if(Math.random()<this.state.melodyDensity)
+        //     this.pn.triggerAttack(notes[noteIdx]);
 
-        if(Math.random()<this.state.melodyDensity)
-            this.pn.triggerAttack(notes[noteIdx]);
+        if(this.state.melodyOff || !(Math.random()<this.state.melodyDensity)) {
+            return;
+        }
+
+        const descendRange = Math.min(this.state.scalePos,7) + 1;
+        const ascendRange = Math.min(this.state.scale.length - this.state.scalePos,7);
+
+        let descend = descendRange > 1;
+        let ascend = ascendRange > 1;
+
+        if(descend && ascend) {
+            if(Math.random()>0.5) {
+                ascend = !descend;
+            } else {
+                descend = !ascend;
+            }
+        }
+
+        let weights = descend ? intervalWeights.slice(0,descendRange) : intervalWeights.slice(0,ascendRange);
+
+        const sum = weights.reduce((prev,curr) => prev+curr, 0);
+        weights = weights.map(w => w/sum);
+        for(let i = 1; i < weights.length; i++) {
+            weights[i] += weights[i-1];
+        }
+
+        const randomWeight = Math.random();
+        let scaleDist = 0;
+        let found = false;
+        while(!found) {
+            if(randomWeight <= weights[scaleDist]) {
+                found = true;
+            }
+            else {
+                scaleDist++;
+            }
+        }
+
+        const scalePosChange = descend ? -scaleDist : scaleDist;
+        const newScalePos = this.state.scalePos + scalePosChange;
+
+        this.setState({
+            ...this.state,
+            scalePos: newScalePos,
+        })
+
+        this.pn.triggerAttack(this.state.scale[newScalePos]);
     }
 
     generateProgression = () => {
+        const scale = fiveToFive;
+        const newKey = Keys[Math.floor(Math.random()*Keys.length)];
+        const newScale = Tone.Frequency(newKey+"5").harmonize(scale).map(f => Tone.Frequency(f).toNote());
+        const newProgression = ChordProgression.generate(8);
+        const newScalePos = Math.floor(Math.random()*scale.length);
+
         this.setState({
             ...this.state,
-            key: keys[Math.floor(Math.random()*keys.length)], 
+            key: newKey, 
             progress: 0, 
-            progression: ChordProgression.generate(8),
-            genChordsOnce: true
+            progression: newProgression,
+            scale: newScale,
+            genChordsOnce: true,
+            scalePos: newScalePos,
         });
     }
 
@@ -178,7 +238,6 @@ class Player extends Component{
             return (
             <li className={idx===(this.state.progress+7)%8 ? "live" : ""} key={idx}>
                 {chord.degree}
-                
             </li>
         )});
 
