@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/lofigen/static/css/main.8ce50d48.chunk.css",
-    "main.js": "/lofigen/static/js/main.91554dbe.chunk.js",
-    "main.js.map": "/lofigen/static/js/main.91554dbe.chunk.js.map",
+    "main.js": "/lofigen/static/js/main.3c3692cd.chunk.js",
+    "main.js.map": "/lofigen/static/js/main.3c3692cd.chunk.js.map",
     "runtime-main.js": "/lofigen/static/js/runtime-main.0868bb00.js",
     "runtime-main.js.map": "/lofigen/static/js/runtime-main.0868bb00.js.map",
-    "static/js/2.877f57ab.chunk.js": "/lofigen/static/js/2.877f57ab.chunk.js",
-    "static/js/2.877f57ab.chunk.js.map": "/lofigen/static/js/2.877f57ab.chunk.js.map",
+    "static/js/2.463e8fe6.chunk.js": "/lofigen/static/js/2.463e8fe6.chunk.js",
+    "static/js/2.463e8fe6.chunk.js.map": "/lofigen/static/js/2.463e8fe6.chunk.js.map",
     "index.html": "/lofigen/index.html",
-    "precache-manifest.1d564c28e369f88f02f4a3b6043766f5.js": "/lofigen/precache-manifest.1d564c28e369f88f02f4a3b6043766f5.js",
+    "precache-manifest.2d5ae289f0c11bd5f370f1438648e0fc.js": "/lofigen/precache-manifest.2d5ae289f0c11bd5f370f1438648e0fc.js",
     "service-worker.js": "/lofigen/service-worker.js",
     "static/css/main.8ce50d48.chunk.css.map": "/lofigen/static/css/main.8ce50d48.chunk.css.map",
-    "static/js/2.877f57ab.chunk.js.LICENSE.txt": "/lofigen/static/js/2.877f57ab.chunk.js.LICENSE.txt"
+    "static/js/2.463e8fe6.chunk.js.LICENSE.txt": "/lofigen/static/js/2.463e8fe6.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.0868bb00.js",
-    "static/js/2.877f57ab.chunk.js",
+    "static/js/2.463e8fe6.chunk.js",
     "static/css/main.8ce50d48.chunk.css",
-    "static/js/main.91554dbe.chunk.js"
+    "static/js/main.3c3692cd.chunk.js"
   ]
 }
