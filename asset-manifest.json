@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/lofigen/static/css/main.8ce50d48.chunk.css",
-    "main.js": "/lofigen/static/js/main.c2225829.chunk.js",
-    "main.js.map": "/lofigen/static/js/main.c2225829.chunk.js.map",
+    "main.js": "/lofigen/static/js/main.18093956.chunk.js",
+    "main.js.map": "/lofigen/static/js/main.18093956.chunk.js.map",
     "runtime-main.js": "/lofigen/static/js/runtime-main.0868bb00.js",
     "runtime-main.js.map": "/lofigen/static/js/runtime-main.0868bb00.js.map",
     "static/js/2.463e8fe6.chunk.js": "/lofigen/static/js/2.463e8fe6.chunk.js",
     "static/js/2.463e8fe6.chunk.js.map": "/lofigen/static/js/2.463e8fe6.chunk.js.map",
     "index.html": "/lofigen/index.html",
-    "precache-manifest.c66ecd2b8620aae2a0a645947d341ec2.js": "/lofigen/precache-manifest.c66ecd2b8620aae2a0a645947d341ec2.js",
+    "precache-manifest.2c350168d5cfb7ddc135796ae6b2dae6.js": "/lofigen/precache-manifest.2c350168d5cfb7ddc135796ae6b2dae6.js",
     "service-worker.js": "/lofigen/service-worker.js",
     "static/css/main.8ce50d48.chunk.css.map": "/lofigen/static/css/main.8ce50d48.chunk.css.map",
     "static/js/2.463e8fe6.chunk.js.LICENSE.txt": "/lofigen/static/js/2.463e8fe6.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.0868bb00.js",
     "static/js/2.463e8fe6.chunk.js",
     "static/css/main.8ce50d48.chunk.css",
-    "static/js/main.c2225829.chunk.js"
+    "static/js/main.18093956.chunk.js"
   ]
 }
