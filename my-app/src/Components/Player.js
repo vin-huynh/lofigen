@@ -57,8 +57,12 @@ class Player extends Component{
         this.hat = new Hat(() => this.setState({...this.state, hatLoaded: true})).sampler;
         this.noise = Noise;
 
-        this.chords = new Tone.Loop(this.playChord,"1n");
-        this.melody = new Tone.Loop(this.playMelody,"8n");
+        this.chords = new Tone.Sequence((time,note) => {
+            this.playChord();
+        }, [""], "1n");
+        this.melody = new Tone.Sequence((time,note) => {
+            this.playMelody();
+        }, [""], "8n");
 
         this.kickLoop = new Tone.Sequence((time,note) => {
             if(!this.state.kickOff) {
@@ -86,6 +90,8 @@ class Player extends Component{
             }
         }, ["C4","C4","C4","C4","C4","C4","C4","C4"], "4n");
         
+        this.chords.humanize = true;
+        this.melody.humanize = true;
         this.kickLoop.humanize = true;
         this.snareLoop.humanize = true;
         this.hatLoop.humanize = true;
@@ -135,9 +141,9 @@ class Player extends Component{
         const size = 4;
         const voicing = chord.generateVoicing(size);
         const notes = Tone.Frequency(root).harmonize(voicing).map(f => Tone.Frequency(f).toNote());
-
-        this.nextChord();
+        //this.pn.context._context.resume();
         this.pn.triggerAttackRelease(notes,"1n");
+        this.nextChord();
     }
 
     playMelody = () => {
@@ -195,7 +201,7 @@ class Player extends Component{
             scalePos: newScalePos,
         })
 
-        this.pn.triggerAttack(this.state.scale[newScalePos]);
+        this.pn.triggerAttackRelease(this.state.scale[newScalePos],"2n");
     }
 
     generateProgression = () => {
@@ -219,17 +225,20 @@ class Player extends Component{
     toggle = () => {
         this.setState({...this.state, progress: 0});
         if(Tone.Transport.state === "started") {
-            Tone.Transport.stop();
             this.noise.stop();
+            Tone.Transport.stop();
+            this.props.toggleWakeLock();
         }
         else {
+            Tone.start();
+            Tone.Transport.start();
             this.noise.start(0);
             this.chords.start(0);
             this.melody.start(0);
             this.kickLoop.start(0);
             this.snareLoop.start(0);
             this.hatLoop.start(0);
-            Tone.Transport.start();
+            this.props.toggleWakeLock();
         }
     }
 

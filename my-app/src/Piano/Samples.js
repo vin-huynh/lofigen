@@ -18,7 +18,7 @@ notes.forEach(note => {
     if(note.includes("#")) {
         noteFilename = note.replace("#","sharp");
     }
-    samples[note] = `${samplePath+noteFilename}v${velocity}.wav`;
+    samples[note] = `${samplePath+noteFilename}v${velocity}.mp3`;
 });
 
 export default samples;

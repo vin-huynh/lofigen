@@ -1,6 +1,6 @@
 import * as Tone from 'tone';
 
-const samplePath = `${process.env.PUBLIC_URL}/DrumSamples/hat.wav`;
+const samplePath = `${process.env.PUBLIC_URL}/DrumSamples/hat.mp3`;
 const samples = {C4: samplePath};
 
 const lpf = new Tone.Filter(2400, "lowpass");
