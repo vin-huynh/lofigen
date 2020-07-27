@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "46c15bccdfc4ad5d630b5520a20b7c87",
+    "revision": "47b4fd7c388aacabd7094cfb2482efc9",
     "url": "/lofigen/index.html"
   },
   {
-    "revision": "ca7cb999520cf5a458a8",
+    "revision": "f181e373eb28463d7aa0",
     "url": "/lofigen/static/css/main.8ce50d48.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/lofigen/static/js/2.463e8fe6.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ca7cb999520cf5a458a8",
-    "url": "/lofigen/static/js/main.3c3692cd.chunk.js"
+    "revision": "f181e373eb28463d7aa0",
+    "url": "/lofigen/static/js/main.c2225829.chunk.js"
   },
   {
     "revision": "7c9d01d445a19f18936b",
